@@ -19,6 +19,14 @@
           <q-btn
             color="black"
             flat
+            @click="github"
+            label="GitHub"
+            class="q-ml-md"
+            no-caps
+          />
+          <q-btn
+            color="black"
+            flat
             @click="linkedin"
             label="LinkedIn"
             class="q-ml-md"
@@ -107,6 +115,9 @@ export default defineComponent({
   methods: {
     linkedin() {
       window.open("https://www.linkedin.com/in/max-weidemann/");
+    },
+    github() {
+      window.open("https://github.com/maxintolerator");
     },
     facebook() {
       this.quasar

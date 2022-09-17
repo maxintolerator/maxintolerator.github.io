@@ -48,7 +48,10 @@
       </div>
     </q-header>
     <div class="row justify-center items-center q-gutter-x-lg">
-      <q-img style="width: 100px; height: 100px" src="images/profile.png" />
+      <q-img
+        style="width: 100px; height: 100px"
+        src="https://avatars.githubusercontent.com/u/109185813?v=4"
+      />
       <div :class="headlineClass" :style="'color: ' + invertedBackgroundColor">
         Hi, I'm Max.<br />I make apps that do stuff.
       </div>

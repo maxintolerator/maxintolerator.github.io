@@ -4,47 +4,54 @@
     :style="'background-color: ' + backgroundColor"
   >
     <q-header
-      class="q-pa-md transparent no-shadow no-border no-outline no-box-shadow no-print"
+      class="q-pa-md no-shadow no-border no-outline no-box-shadow no-print"
+      :style="'background-color: ' + backgroundColor"
     >
-      <div class="row justify-between q-gutter-x-md">
-        <div class="text-black q-mt-sm" v-if="$q.screen.width > 950">
-          I have no idea why this fucking header is white. CSS sucks man.
-        </div>
+      <div class="row justify-between q-gutter-x-md transparent">
+        <div class="text-black q-mt-sm transparent"></div>
 
         <div>
           <a href="mailto:max@intolerator.com"
-            ><q-btn color="black" flat label="Email" class="q-ml-md" no-caps>
+            ><q-btn
+              flat
+              label="Email"
+              no-caps
+              :style="'color: ' + invertedBackgroundColor"
+            >
             </q-btn
           ></a>
           <q-btn
-            color="black"
+            :style="'color: ' + invertedBackgroundColor"
             flat
             @click="github"
             label="GitHub"
-            class="q-ml-md"
+            :class="$q.screen.width > 450 ? 'q-ml-md' : ''"
             no-caps
           />
           <q-btn
-            color="black"
+            :style="'color: ' + invertedBackgroundColor"
             flat
             @click="linkedin"
             label="LinkedIn"
-            class="q-ml-md"
+            :class="$q.screen.width > 450 ? 'q-ml-md' : ''"
             no-caps
           />
           <q-btn
             flat
-            color="black"
+            :style="'color: ' + invertedBackgroundColor"
             @click="facebook"
             label="Facebook"
-            class="q-ml-md"
+            :class="$q.screen.width > 450 ? 'q-ml-md' : ''"
             no-caps
           />
         </div>
       </div>
     </q-header>
-    <div :class="headlineClass" :style="'color: ' + invertedBackgroundColor">
-      Hi, I'm Max.<br />I make apps that do stuff.
+    <div class="row justify-center items-center q-gutter-x-lg">
+      <q-img style="width: 100px; height: 100px" src="profile.png" />
+      <div :class="headlineClass" :style="'color: ' + invertedBackgroundColor">
+        Hi, I'm Max.<br />I make apps that do stuff.
+      </div>
     </div>
   </q-page>
 </template>

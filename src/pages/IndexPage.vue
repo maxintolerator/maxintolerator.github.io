@@ -71,14 +71,16 @@
                 <div
                     class="row justify-center items-center q-gutter-lg q-mt-xl"
                 >
-                    <q-btn
-                        size="20px"
-                        outline
-                        :style="'color: ' + invertedBackgroundColor"
-                        no-caps
-                        label="Get in touch"
-                        @click="window.open('mailto:max@intolerator.com')"
-                    />
+                    <a href="mailto:max@intolerator.com"
+                        ><q-btn
+                            size="20px"
+                            outline
+                            label="Get in Touch"
+                            no-caps
+                            :style="'color: ' + invertedBackgroundColor"
+                        >
+                        </q-btn
+                    ></a>
                     <q-btn
                         size="20px"
                         outline
@@ -185,7 +187,7 @@ export default defineComponent({
                     backgroundColor.length - 1
                 )
             )
-            const color = `hsl(${360 - hue}, ${100 - saturation}%, ${
+            const color = `hsl(${500 - hue}, ${100 - saturation}%, ${
                 100 - lightness
             }%)`
             return color

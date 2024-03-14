@@ -3,6 +3,18 @@
         class="flex flex-center"
         :style="'background-color: ' + backgroundColor"
     >
+        <div
+            class="fixed-bottom-left q-pa-md cursor-pointer"
+            v-if="isScrollArrowVisible"
+        >
+            <q-icon
+                class="q-mr-md q-mb-md"
+                name="keyboard_arrow_down"
+                size="50px"
+                @click="scrollToBottom"
+                :style="'color: ' + invertedBackgroundColor"
+            />
+        </div>
         <q-header
             class="q-pa-md no-shadow no-border no-outline no-box-shadow no-print"
             :style="'background-color: ' + backgroundColor"
@@ -87,8 +99,43 @@
                         :style="'color: ' + invertedBackgroundColor"
                         no-caps
                         label="My Portfolio"
-                        @click="scrollToBottom"
+                        @click="scrollToPortfolio"
                     />
+                </div>
+            </div>
+        </div>
+        <div class="vp-wrapper">
+            <div class="vp-center-2" style="max-width: 1000px">
+                <div
+                    class="text-h3"
+                    :style="'color: ' + invertedBackgroundColor"
+                >
+                    Bio
+                </div>
+                <div
+                    class="text-subtitle1 q-mt-lg"
+                    :style="'color: ' + invertedBackgroundColor"
+                >
+                    <p>
+                        I am a self-taught full-stack software engineer
+                        passionate about solving complex problems, making them
+                        easy to understand, and helping others learn. I started
+                        by teaching advanced Mathematics and Theoretical Physics
+                        at German universities and worked on building e-learning
+                        platforms early on.
+                    </p>
+                    <p>
+                        After graduating, I teamed up with my half-brother
+                        Martin to co-found millionways. I quickly learned the
+                        skills needed to create fully fleshed-out product demos,
+                        including the millionways mobile and web apps and the
+                        API, and set up the technical side of the business.
+                    </p>
+                    <p>
+                        I hold a Master's degree in Mathematics from the
+                        University of Frankfurt am Main, Germany, and multiple
+                        Certificates in Neural Networks and Deep Learning.
+                    </p>
                 </div>
             </div>
         </div>
@@ -128,8 +175,7 @@ export default defineComponent({
     },
     data() {
         return {
-            positionX: 0,
-            positionY: 0,
+            currentScroll: 0,
             cards: [
                 {
                     title: 'millionways App',
@@ -153,6 +199,9 @@ export default defineComponent({
         }
     },
     computed: {
+        isScrollArrowVisible() {
+            return this.currentScroll < this.$q.screen.height + 100
+        },
         headlineClass() {
             const { width } = this.quasar.screen
             if (width < 768) {
@@ -164,10 +213,10 @@ export default defineComponent({
             return 'text-h2'
         },
         backgroundColor() {
-            const { positionX, positionY } = this
-            const color = `hsl(${positionX + positionY}, ${Math.floor(
-                Math.random() * 101
-            )}%, ${Math.floor(Math.random() * 101)}%)`
+            const hue = Math.floor(Math.random() * 360)
+            const saturation = Math.floor(Math.random() * 61) + 20
+            const lightness = Math.floor(Math.random() * 41) + 10
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
             return color
         },
         invertedBackgroundColor() {
@@ -187,16 +236,24 @@ export default defineComponent({
                     backgroundColor.length - 1
                 )
             )
-            const color = `hsl(${500 - hue}, ${100 - saturation}%, ${
-                100 - lightness
-            }%)`
+
+            // Ensure that inverted lightness doesn't exceed 100 or go below 0
+            const invertedLightness = Math.max(
+                0,
+                Math.min(100, 100 - lightness)
+            )
+
+            const color = `hsl(${360 - hue}, ${
+                100 - saturation
+            }%, ${invertedLightness}%)`
             return color
         }
     },
     mounted() {
-        // set position x and y to a random number between 0 and 360
-        this.positionX = Math.floor(Math.random() * 360)
-        this.positionY = Math.floor(Math.random() * 360)
+        // listen to scroll position and update currentScroll
+        window.addEventListener('scroll', () => {
+            this.currentScroll = window.scrollY
+        })
     },
     methods: {
         linkedin() {
@@ -229,8 +286,21 @@ export default defineComponent({
         },
         scrollToBottom() {
             //smooth scroll to bottom
+            let scrollPosition = this.currentScroll
+            if (scrollPosition < this.$q.screen.height) {
+                scrollPosition = this.$q.screen.height
+            } else {
+                scrollPosition = this.$q.screen.height * 2
+            }
             let scrollOptions = {
-                top: this.$q.screen.height,
+                top: scrollPosition,
+                behavior: 'smooth'
+            }
+            window.scrollTo(scrollOptions)
+        },
+        scrollToPortfolio() {
+            let scrollOptions = {
+                top: 2 * this.$q.screen.height,
                 behavior: 'smooth'
             }
             window.scrollTo(scrollOptions)

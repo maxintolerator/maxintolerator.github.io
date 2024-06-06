@@ -22,14 +22,6 @@
             <div class="row justify-between q-gutter-x-md transparent">
                 <div class="text-black q-mt-sm transparent"></div>
                 <div>
-                    <q-btn
-                        :style="'color: ' + invertedBackgroundColor"
-                        flat
-                        @click="upwork"
-                        label="Hire me on Upwork"
-                        :class="$q.screen.width > 450 ? 'q-ml-md' : ''"
-                        no-caps
-                    />
                     <a href="mailto:max@intolerator.com"
                         ><q-btn
                             flat
@@ -236,13 +228,11 @@ export default defineComponent({
                     backgroundColor.length - 1
                 )
             )
-
             // Ensure that inverted lightness doesn't exceed 100 or go below 0
             const invertedLightness = Math.max(
                 0,
                 Math.min(100, 100 - lightness)
             )
-
             const color = `hsl(${360 - hue}, ${
                 100 - saturation
             }%, ${invertedLightness}%)`
@@ -258,11 +248,6 @@ export default defineComponent({
     methods: {
         linkedin() {
             window.open('https://www.linkedin.com/in/max-weidemann/')
-        },
-        upwork() {
-            window.open(
-                'https://www.upwork.com/freelancers/~01568922fccea51b3d?mp_source=share'
-            )
         },
         github() {
             window.open('https://github.com/maxintolerator')

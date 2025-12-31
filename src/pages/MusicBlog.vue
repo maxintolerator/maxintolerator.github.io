@@ -226,12 +226,13 @@ export default defineComponent({
                         },
                         {
                             rank: 14,
-                            title: 'Keep It Quiet',
-                            band: 'Greyhaven',
+                            title: 'BELIEVEYOUME',
+                            band: 'Shiner',
                             coverImage:
-                                'https://lastfm.freetls.fastly.net/i/u/770x0/eeade31747d1074ce28462e1b5ccd721.jpg#eeade31747d1074ce28462e1b5ccd721',
-                            review: '<p>Have become one of my favorite math/metalcore bands in 2018, instantly fell in love with Empty Black and then they disappointed me a bit with their 2022 album This Bright and Beautiful World. This album for me is a return to form and features the great blend of chaotic mathcore and melodic metalcore that makes them unique. Second half is definitely better.</p><p>Favorite Songs: Technicolor Blues, From the Backseat of a Moving Car, Diamond to Diamond.</p>'
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/02bb4c927ad3973a0096a7a6de26a176.jpg#02bb4c927ad3973a0096a7a6de26a176',
+                            review: '<p>Another great discovery this year. I went through their entire discography for the first time this year and this album beautifully blends Failure type Alternative Rock / Space Rock with classic 90s and 2000s post-hardcore. Much better than the predecessor Schadenfreude from 2020. Also great production and no skips in the entire album.</p><p>Favorite Songs: The Alligator, So Far So, My Mirror Hates Me, Lazarus, Broken Satellites.</p>'
                         },
+
                         {
                             rank: 13,
                             title: 'Angel',
@@ -258,11 +259,11 @@ export default defineComponent({
                         },
                         {
                             rank: 10,
-                            title: 'BELIEVEYOUME',
-                            band: 'Shiner',
+                            title: 'Keep It Quiet',
+                            band: 'Greyhaven',
                             coverImage:
-                                'https://lastfm.freetls.fastly.net/i/u/770x0/02bb4c927ad3973a0096a7a6de26a176.jpg#02bb4c927ad3973a0096a7a6de26a176',
-                            review: '<p>Another great discovery this year. I went through their entire discography for the first time this year and this album beautifully blends Failure type Alternative Rock / Space Rock with classic 90s and 2000s post-hardcore. Much better than the predecessor Schadenfreude from 2020. Also great production and no skips in the entire album.</p><p>Favorite Songs: The Alligator, So Far So, My Mirror Hates Me, Lazarus, Broken Satellites.</p>'
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/eeade31747d1074ce28462e1b5ccd721.jpg#eeade31747d1074ce28462e1b5ccd721',
+                            review: '<p>Have become one of my favorite math/metalcore bands in 2018, instantly fell in love with Empty Black and then they disappointed me a bit with their 2022 album This Bright and Beautiful World. This album for me is a return to form and features the great blend of chaotic mathcore and melodic metalcore that makes them unique. Second half is definitely better.</p><p>Favorite Songs: Technicolor Blues, From the Backseat of a Moving Car, Diamond to Diamond.</p>'
                         },
                         {
                             rank: 9,

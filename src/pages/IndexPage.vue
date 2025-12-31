@@ -22,12 +22,20 @@
             <div class="row justify-between q-gutter-x-md transparent">
                 <div class="text-black q-mt-sm transparent"></div>
                 <div>
+                    <q-btn
+                        flat
+                        label="Music Blog"
+                        no-caps
+                        :style="'color: ' + invertedBackgroundColor"
+                        @click="$router.push('/music-blog')"
+                    />
                     <a href="mailto:max@intolerator.com"
                         ><q-btn
                             flat
                             label="Email"
                             no-caps
                             :style="'color: ' + invertedBackgroundColor"
+                            :class="$q.screen.width > 450 ? 'q-ml-md' : ''"
                         >
                         </q-btn
                     ></a>
@@ -205,37 +213,20 @@ export default defineComponent({
             return 'text-h2'
         },
         backgroundColor() {
+            // Very dark background: random hue, moderate saturation, very low lightness
             const hue = Math.floor(Math.random() * 360)
-            const saturation = Math.floor(Math.random() * 61) + 20
-            const lightness = Math.floor(Math.random() * 41) + 10
+            const saturation = Math.floor(Math.random() * 50) + 30 // 30-80% saturation for colorful but dark
+            const lightness = Math.floor(Math.random() * 10) + 5 // 5-15% lightness for very dark
             const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
             return color
         },
         invertedBackgroundColor() {
-            const { backgroundColor } = this
-            const hue = parseInt(
-                backgroundColor.substring(4, backgroundColor.length - 1)
-            )
-            const saturation = parseInt(
-                backgroundColor.substring(
-                    backgroundColor.indexOf(',') + 1,
-                    backgroundColor.lastIndexOf(')')
-                )
-            )
-            const lightness = parseInt(
-                backgroundColor.substring(
-                    backgroundColor.lastIndexOf(',') + 1,
-                    backgroundColor.length - 1
-                )
-            )
-            // Ensure that inverted lightness doesn't exceed 100 or go below 0
-            const invertedLightness = Math.max(
-                0,
-                Math.min(100, 100 - lightness)
-            )
-            const color = `hsl(${360 - hue}, ${
-                100 - saturation
-            }%, ${invertedLightness}%)`
+            // Super readable light text: high lightness, low saturation for good contrast
+            // We'll use a light color that contrasts well with dark backgrounds
+            const lightness = Math.floor(Math.random() * 10) + 90 // 90-100% lightness for very light text
+            const saturation = Math.floor(Math.random() * 15) + 5 // 5-20% saturation for subtle color
+            const hue = Math.floor(Math.random() * 360) // Random hue for variety
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
             return color
         }
     },

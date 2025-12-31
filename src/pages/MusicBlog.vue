@@ -1,0 +1,529 @@
+<template>
+    <q-page class="q-pa-lg" :style="'background-color: ' + backgroundColor">
+        <div class="container" style="max-width: 1200px; margin: 0 auto">
+            <!-- Header -->
+            <div class="row justify-between items-center q-mb-xl">
+                <div
+                    class="text-h3"
+                    :style="'color: ' + invertedBackgroundColor"
+                >
+                    Music Blog
+                </div>
+                <q-btn
+                    flat
+                    :style="'color: ' + invertedBackgroundColor"
+                    label="Back to Home"
+                    no-caps
+                    @click="$router.push('/')"
+                />
+            </div>
+
+            <!-- Blog Entries -->
+            <div
+                v-for="entry in blogEntries"
+                :key="entry.year"
+                class="blog-entry q-mb-xl"
+            >
+                <!-- Year Header -->
+                <div
+                    class="text-h4 q-mb-lg"
+                    :style="'color: ' + invertedBackgroundColor"
+                >
+                    {{ entry.year }} Year in Review
+                </div>
+
+                <!-- Disappointments Section -->
+                <div v-if="entry.disappointments" class="q-mb-xl">
+                    <div
+                        class="text-h5 q-mb-md"
+                        :style="'color: ' + invertedBackgroundColor"
+                    >
+                        Disappointments
+                    </div>
+                    <div
+                        class="text-body1 blog-text-content"
+                        :style="'color: ' + invertedBackgroundColor"
+                    >
+                        <p
+                            v-for="(
+                                paragraph, idx
+                            ) in entry.disappointments.split('\n\n')"
+                            :key="'disappointments-' + idx"
+                            class="q-mb-md"
+                            v-html="paragraph"
+                        ></p>
+                    </div>
+                </div>
+
+                <!-- Honorable Mentions Section -->
+                <div v-if="entry.honorableMentions" class="q-mb-xl">
+                    <div
+                        class="text-h5 q-mb-md"
+                        :style="'color: ' + invertedBackgroundColor"
+                    >
+                        Honorable Mentions
+                    </div>
+                    <div
+                        class="text-body1 blog-text-content"
+                        :style="'color: ' + invertedBackgroundColor"
+                    >
+                        <p
+                            v-for="(
+                                paragraph, idx
+                            ) in entry.honorableMentions.split('\n\n')"
+                            :key="'honorable-' + idx"
+                            class="q-mb-md"
+                            v-html="paragraph"
+                        ></p>
+                    </div>
+                </div>
+
+                <!-- Top 20 Albums -->
+                <div v-if="entry.topAlbums && entry.topAlbums.length > 0">
+                    <div
+                        class="text-h5 q-mb-lg"
+                        :style="'color: ' + invertedBackgroundColor"
+                    >
+                        Top 20 Albums
+                    </div>
+                    <div
+                        v-for="(album, index) in sortedAlbums(entry.topAlbums)"
+                        :key="'album-' + album.rank"
+                        class="album-entry q-mb-xl"
+                        :class="index % 2 === 0 ? 'album-left' : 'album-right'"
+                    >
+                        <div
+                            class="album-row"
+                            :class="
+                                index % 2 === 0
+                                    ? 'album-row-left'
+                                    : 'album-row-right'
+                            "
+                        >
+                            <!-- Album Cover -->
+                            <div class="album-cover-wrapper q-pa-md">
+                                <q-img
+                                    :src="album.coverImage"
+                                    :alt="album.title + ' by ' + album.band"
+                                    class="album-cover"
+                                    :ratio="1"
+                                    style="border-radius: 8px"
+                                />
+                            </div>
+                            <!-- Album Info -->
+                            <div
+                                class="album-info-wrapper q-pa-md"
+                                :class="
+                                    index % 2 === 0 ? 'text-left' : 'text-right'
+                                "
+                            >
+                                <div
+                                    class="text-h6 q-mb-sm"
+                                    :style="'color: ' + invertedBackgroundColor"
+                                >
+                                    #{{ album.rank }}. {{ album.title }}
+                                </div>
+                                <div
+                                    class="text-subtitle1 q-mb-md"
+                                    :style="
+                                        'color: ' +
+                                        invertedBackgroundColor +
+                                        '; opacity: 0.8'
+                                    "
+                                >
+                                    {{ album.band }}
+                                </div>
+                                <div
+                                    class="text-body1 blog-text-content"
+                                    :style="'color: ' + invertedBackgroundColor"
+                                >
+                                    <p v-html="album.review"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div
+                v-if="!blogEntries || blogEntries.length === 0"
+                class="text-center q-pa-xl"
+            >
+                <div
+                    class="text-h6"
+                    :style="'color: ' + invertedBackgroundColor"
+                >
+                    No blog entries yet. Check back soon!
+                </div>
+            </div>
+        </div>
+    </q-page>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+    name: 'MusicBlog',
+    data() {
+        return {
+            // Blog entries structure - easy to fill with data
+            blogEntries: [
+                {
+                    year: 2025,
+                    disappointments: `<p>2025 was a great year for music, but like any other year, there were some big disappointments. Here are some of the albums that I was looking forward to that didn't live up to the hype.</p><p>Biffy Clyro's Futique was a major letdown, I thought they might go back to their roots, but it was just another generic rock album. Only song I liked was Friendshipping. <p>Dance Gavin Dance's Pantheon was another big letdown. I didn't mind the replacement of their vocalist since I like Andrew's vocals. But the songs were forgettable and had too many layers of unnecessary stuff. </p><p>Some others worth mentioning before I get to my biggest letdown are Daniel Caesar, Eidola, Dayseeker, Fleshwater, Giveon, Khalid, Mogwai, Moving Mountains, Seven, and Xavier Omär. Not a great year for Soul unfortunately.</p><p>My biggest disappointment of the year was by far the new Sleep Token album Even In Arcadia. They have now officially reached the point of extreme overhype. The album is just a collection of mediocre pop songs with the exception of a few songs that are actually quite good for their standards. I really wanted to like it like their previous work, but they might lose me as a fan if they continue to make this kind of music. Not that it matters, because they have millions of fans and are now basically a pop band.</p>`,
+                    honorableMentions: `<p>Here are some honorable mentions that didn't make the top 20 but I found were great albums.</p><p>
+                    Destin Conrad - whimsy, Asava - Mantras, Atmosphere - Jestures, AVKRVST - Waving at the Sky, Benthos - From Nothing, Downward - Downward (2), Life Pilot - Self Titled, Slow Mass - Low On Foot and Spiritbox - Tsunami Sea.</p>`,
+                    topAlbums: [
+                        {
+                            rank: 20,
+                            title: 'Birna',
+                            band: 'Wardruna',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/155aa622a72e545eb62173cf1223e15e.jpg#155aa622a72e545eb62173cf1223e15e',
+                            review: '<p>Ritualistic, dark, atmospheric and haunting. They have a unique viking sound that makes you feel like you are actually in Norway in the eigth century. A must listen for anyone who loves nordic folk and dark atmospheric music. </p><p>Favorite Songs: Birna, Jord til Ljos, Himinndotter, Skuggehesten.</p>'
+                        },
+                        {
+                            rank: 19,
+                            title: 'Reptilian Brain',
+                            band: 'Alpha Male Tea Party',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/bb44eab54056becf7b5022e384c6680c.jpg#bb44eab54056becf7b5022e384c6680c',
+                            review: '<p>Great comeback album from the band. I have kind of forgotten about them, but this album brings them back to the top of my list. They rely on their fun mathy style but bring some heaviness into the mix. Extremely fun and catchy album.</p><p>Favorite Songs: Hostess Imperial, Probably Just Hungry, Battle Crab.</p>'
+                        },
+                        {
+                            rank: 18,
+                            title: 'Black Hole Superette',
+                            band: 'Aesop Rock',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/ba1c0f4296c03678fcf7ad7d9b111d3b.jpg#ba1c0f4296c03678fcf7ad7d9b111d3b',
+                            review: 'Great album from Aesop Rock. He is one of the best lyricists in the game and this album is no exception. Some songs make you laugh and some make you think. And just like on the previous album with Aggressive Steven you find another hilarious story-style song in Snail Zero, just gotta love his creativity and humor.</p><p>Favorite Songs: So Be It, Snail Zero, Unbelievable Shenanigans.</p>'
+                        },
+                        {
+                            rank: 17,
+                            title: 'The Sky, The Earth & All Between',
+                            band: 'Architects',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/4162988f8299d2bd7314ac97bc8fabb4.jpg#4162988f8299d2bd7314ac97bc8fabb4',
+                            review: '<p>While I am not the biggest Architects fan, I do appreciate their influence on the metalcore scene and their unique sound. This album is no exception and just a well produced heavy album with great songs. Love that they shifted a little away from the generic popcore sound of the previous album. </p><p>Favorite Songs: Elegy, Blackhole, Everything Ends.</p>'
+                        },
+                        {
+                            rank: 16,
+                            title: 'Liminal',
+                            band: 'AVRALIZE',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/3a1772ab6d2c01f711744b4c8cc6e862.jpg#3a1772ab6d2c01f711744b4c8cc6e862',
+                            review: "<p>Super fun troll metal album from AVRALIZE. Gotta love the attempt to marry disco and dance with metalcore like on Medicine. Some are more on the dancy side and others are just good old heavy metalcore. Very fun album and a must for anyone who love creative metal that doesn't take itself too seriously and just uplifts you.</p><p>Favorite Songs: Medicine, Wanderlust, Cyanide.</p>"
+                        },
+                        {
+                            rank: 15,
+                            title: 'Red Heifer',
+                            band: 'Holywatr',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/466e8ee5bae9baf94ad1c918300096ba.jpg#466e8ee5bae9baf94ad1c918300096ba',
+                            review: '<p>Solid album, discovered them this year and they remind me more of Static Dress than of Sleep Token, which is a good thing nowadays.</p><p>Favorite Songs: Make It Hard to Steer, Lip Service, Sweet Child Wishes Well.</p>'
+                        },
+                        {
+                            rank: 14,
+                            title: 'Keep It Quiet',
+                            band: 'Greyhaven',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/eeade31747d1074ce28462e1b5ccd721.jpg#eeade31747d1074ce28462e1b5ccd721',
+                            review: '<p>Have become one of my favorite math/metalcore bands in 2018, instantly fell in love with Empty Black and then they disappointed me a bit with their 2022 album This Bright and Beautiful World. This album for me is a return to form and features the great blend of chaotic mathcore and melodic metalcore that makes them unique. Second half is definitely better.</p><p>Favorite Songs: Technicolor Blues, From the Backseat of a Moving Car, Diamond to Diamond.</p>'
+                        },
+                        {
+                            rank: 13,
+                            title: 'Angel',
+                            band: 'Unprocessed',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/6a842f106cd157040595210f333d5f6d.jpg#6a842f106cd157040595210f333d5f6d',
+                            review: "<p>Have been looking forward to this one for a while and jammed the singles in 2024. My favorite album will probably always be Gold but this brings them back to the early heavy sound while keeping it interesting and sometimes groovy like on Gold. The singles blend in well and the non-singles are really great too. Just wasn't a huge fan of the rap parts on Solara.</p><p>Favorite Songs:  Beyond Heaven's Gate, Sacrifice Me, Your Dress, Perfume, Dark Silent And Complete.</p>"
+                        },
+                        {
+                            rank: 12,
+                            title: 'Another Miracle',
+                            band: 'Of Mice & Men',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/60fdb675396200f72c5f576d1e5d3e8b.jpg#60fdb675396200f72c5f576d1e5d3e8b',
+                            review: '<p>Before this Album I was not a huge OM&M fan. This got me into them finally. I re-listened to their entire discography after this and have to say they do earn the spot of a unique Metalcore band that is far from generic. On the recent albums, they definitely tap into a more progressive and emotional sound that I really love. Songs like Wake Up feel like a weightless lift to heaven. I also love their older heavy sound but I can definitely see they drew influences from their early metal catalog and are now exploring a progressive evolution.</p><p>Favorite Songs: Safe & Sound, Wake Up, Flowers, Contact.</p>'
+                        },
+                        {
+                            rank: 11,
+                            title: 'Phantom : : Phoenix',
+                            band: 'Stellar Circuits',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/125e02188bebae48377510d1a36b2d4d.jpg#125e02188bebae48377510d1a36b2d4d',
+                            review: '<p>Loved this band since their first album and their vocals always reminded me of 10 Years. This new album is heavier than the previous one and I definitely love it. Shifting to Hardcore and Metalcore influences while staying true to their progressive sound. Might not be my favorite Stellar Circuits album, but it is definitely more than solid.</p><p>Favorite Songs: Silhouette, Corridor, Same Page.</p>'
+                        },
+                        {
+                            rank: 10,
+                            title: 'BELIEVEYOUME',
+                            band: 'Shiner',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/02bb4c927ad3973a0096a7a6de26a176.jpg#02bb4c927ad3973a0096a7a6de26a176',
+                            review: '<p>Another great discovery this year. I went through their entire discography for the first time this year and this album beautifully blends Failure type Alternative Rock / Space Rock with classic 90s and 2000s post-hardcore. Much better than the predecessor Schadenfreude from 2020. Also great production and no skips in the entire album.</p><p>Favorite Songs: The Alligator, So Far So, My Mirror Hates Me, Lazarus, Broken Satellites.</p>'
+                        },
+                        {
+                            rank: 9,
+                            title: 'cut. turn. fade. back.',
+                            band: 'Hail The Sun',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/826509bf6b872c0667da0ed733c3594e.jpg#826509bf6b872c0667da0ed733c3594e',
+                            review: "<p>If you told me a year ago that Hail the Sun would not make my top 5 I would have laughed. But this album is just not as good as their previous ones. First of all, the mix does not really fit the band and I hate that they went with a more commercial and heavy mix. This band literally does NOT need a heavy mix, they are heavy through their unique blend of post-hardcore, progressive rock and Donovan's vocals. However, it is still a Hail the Sun album and they are my second favorite band of all time. Second half of the album is definitely better and I saw myself enjoying the non-singles much more than the singles after a couple of listens. There are still a lot of bangers and it is one of the best live bands ever so I cannot wait to see this played live and not have this terrible mix.</p><p>Favorite Songs: There's No Place in Heaven For Fakes, I Can Tell By The Scars, Rightless Destiny, War Crimes.</p>"
+                        },
+                        {
+                            rank: 8,
+                            title: 'Irrlicht',
+                            band: 'Eden Circus',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/3456cc7307ce6f24de32284e01cc0a12.jpg#3456cc7307ce6f24de32284e01cc0a12',
+                            review: '<p>I am really lucky I re-stumbled upon this band this year. These are one of the bands that had an album more than a decade ago, then you kinda forget about them. And now they are back with an album that completely took me by surprise. I liked their unique blend of post-rock and progressive rock/metal back in the day but this is a major step up for them. It draws in modern metal influences, still has the post-rock elements and puts their songwriting skills on a whole new level. It reminds me of a mix of Karnivool, Oceansize with hypnotic ISIS-like post-rock passages. Unlike their first album, they also have more coherent short songs with a focus on songwriting over drawing out songs with endless instrumental passages. I really wish them international success and hope with this album they get the recognition they deserve. </p><p>Favorite Songs: Needle Your Way, Agnostic Apology, Second Dance, NU.</p>'
+                        },
+                        {
+                            rank: 7,
+                            title: 'Bodies',
+                            band: 'Thornhill',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/f95467f40fa9d1acf03644edde32ecf0.jpg#f95467f40fa9d1acf03644edde32ecf0',
+                            review: '<p>This band truly found their sound. The predecessor Heroine from 2022 was already a huge step up in my opinion (even though most fans seemed to dislike that one), especially in terms of finding their unique sound. Their sound reminds me of playing Vampire the Masquerade 2: Bloodlines back in the day. Just a super dark atmosphere, blending industrial sounds with extremely groovy and atmospheric metalcore. I saw them live last year before they dropped Bodies and I cannot wait for more releases to come. While I still prefer Heroine over Bodies, this album has an amazing flow from start to finish, great blend of dynamics and the sound...... THE SOUND. I got new headphones this year and this album gave me instant eargasms with this new sound. Turn the bass up, turn the volume up play Silver Swarm and wait for the freaking explosion after a few seconds. This is just an amazing musical experience and I also love how they present their more emotional side towards the end of the album with songs like For Now. Definitely one of the best metal releases of this year and this decade.</p><p>Favorite Songs: Diesel, Silver Swarm, Nerv, Obsession, under the knife, For Now.</p>'
+                        },
+                        {
+                            rank: 6,
+                            title: 'To Live In A Different Way',
+                            band: 'Love Is Noise',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/7fce83cec6c57fa8e5ed17911abb4c31.jpg#7fce83cec6c57fa8e5ed17911abb4c31',
+                            review: '<p>Great discovery this year. I was not prepared for this album at all. What initially felt like another shoegaze band quickly turned into a very unique blend of oldschool 2000s hardcore, post-rock and metal. They definitely jump around a lot in terms of style and tempo but still manage to keep it coherent and flow well. It reminds me of Static Dress, just a little less heavy and more shoegazy and atmospheric. Ascending is such a soul crushing and incredible closer I cannot get enough of it.My favorite single from this band this year though is not on this album and is called Hole in Me.</p><p>Favorite Songs: Soft Glow, take.one.minute, It hurts to know youre there, To live in a different way, Ascending.</p>'
+                        },
+                        {
+                            rank: 5,
+                            title: 'Hit It!',
+                            band: 'Vianova',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/583c21a077178f12bf465124c46501b4.jpg#583c21a077178f12bf465124c46501b4',
+                            review: '<p>This is AOTY for a lot of people out there. They definitely redefined the entire metalcore scene with this one. Super progressive, super fun and silly at times and still just a very solid well flowing album with a LOT of bangers. Absolutely incredible for a debut album and cannot wait for more releases to come. Nothing else to say, just a must listen.</p><p>Favorite Songs: Mas Rapido, Wheel of Fortune, Oh No (Believer), Marimba, Uh Yaya.</p>'
+                        },
+                        {
+                            rank: 4,
+                            title: "Don't Leave Me Here, Pt. 1",
+                            band: 'You Win Again Gravity',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/c79c12015e254db6474fc7b19527ac90.jpg#c79c12015e254db6474fc7b19527ac90',
+                            review: '<p>Hands down my favorite discovery this year. This band was not on my radar at all until I saw this record come out this year. I listened through their entire discography and instantly fell in love with this band. They are kind of like a beautiful child of Oceansize and The Contortionist. Never heard this unique blend of post-hardcore, progressive metal and math rock before. This album while only a Pt1 and kind of at an EP length offers one of the best selection of songs this year. Starting of with the incredibly heavy Dreadbound and then going into one of my favorite songs of the year Something Has to Change and ending solid on This Place is Deafining it is just a super well flowing well rounded album that offers everything the prog metal ear desires. </p><p>Favorite Songs: Dreadbound, Something Has to Change, Lost Within the Leaves, This Place is Deafining,.</p>'
+                        },
+                        {
+                            rank: 3,
+                            title: "I Don't Want To See You In Heaven",
+                            band: 'The Callous Daoboys',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/a6d33cfe4817ced265f273a741a4c705.jpg#a6d33cfe4817ced265f273a741a4c705',
+                            review: '<p>Major step up for the Daoboys. They have always been a great band but this album is just a step up in every way. They include more accessible and catchy songs while still keeping the unique craziness that is the Callous Daoboys. It is their longest release to date and it tells a full story and feels like a super mature album that contains everything that I love about this band. Songs like Lemon and Body Horror for Birds offer something completely new and unexpected which threw me off in the best way possible. And songs like Two-headed Trout, Schizophrenia Legacy, and Idiot Tempation Force go full blown Daoboys insanity and even bring that to the next level. Flawless album and my favorite Daoboys album by far.</p><p>Favorite Songs: Lemon, Body Horror for Birds, Two-headed Trout, Schizophrenia Legacy, Idiot Tempation Force.</p>'
+                        },
+                        {
+                            rank: 2,
+                            title: 'Horizons / West',
+                            band: 'Thrice',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/be11fecc68fc92868e6b01c59b11a10f.jpg#be11fecc68fc92868e6b01c59b11a10f',
+                            review: '<p>I have been a Thrice fan since about 2018 but this band gradually grew on me over the years and now is one of my all time favorite bands. It makes me a little sad and nostalgic not having discovered them in their prime phase of the early 2000s, but I am glad I discovered them when I did. This album is a perfect example of why they are one of my favorite bands of all time. It references all their previous work and style, bring back the old school elements of The Alchemy Index, Vheissu and tie into completing the Horizons saga. West is the sunset and it definitely feels like the darker album of the two. It also made me appreciate East much more after relistening both of the albums back to back. Saw most of the songs live this year and so happy I got to see them play this along with some of their older material. A special shoutout goes to Holding on which lyrically feels like a continuation of The Long Defeat and just hits on all levels easily making it one of my favorite songs of the year. The Dark Glow has just one of the best songwriting of this year and takes the dark atmosphere on a whole new level. Overall: Atmosphere, production and songwriting is just perfection. </p><p>Favorite Songs: Gnash, Albatross, Undertow, Holding On, The Dark Glow, Distant Suns, Vesper Light.</p>'
+                        },
+                        {
+                            rank: 1,
+                            title: 'Private Music',
+                            band: 'Deftones',
+                            coverImage:
+                                'https://lastfm.freetls.fastly.net/i/u/770x0/c63c84a5baf41e94717f5dfc2741cb4c.jpg#c63c84a5baf41e94717f5dfc2741cb4c',
+                            review: '<p>First of all I have to say I came in to this with a little bit of a bias having been a huge Deftones fan AND being very disappointed with their previous album Ohms. But private music is a return to form for them and is just an incredibly well written album from start to finish. On my first listen I did not immediately connect with it but after only a few more listens I was completely hooked and addicted. The first four songs flow SO perfectly they are almost like one long awesome opener. After that it is just a non-stop barrage of bangers and amazing songs. I think about you all the time and milk of the madonna are just masterpieces. And then the closer. What a way to end an already incredible album.I have listened to this album so much this year and it has just become one of my all time favorite albums, might easily be an all time 10/10. </p><p>Favorite Songs: my mind is a mountain, ecdysis, infinite source, i think about you all the time, milk of the madonna, departing the body.</p>'
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    computed: {
+        backgroundColor() {
+            // Very dark background: random hue, moderate saturation, very low lightness
+            const hue = Math.floor(Math.random() * 360)
+            const saturation = Math.floor(Math.random() * 50) + 30 // 30-80% saturation for colorful but dark
+            const lightness = Math.floor(Math.random() * 10) + 5 // 5-15% lightness for very dark
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+            return color
+        },
+        invertedBackgroundColor() {
+            // Super readable light text: high lightness, low saturation for good contrast
+            // We'll use a light color that contrasts well with dark backgrounds
+            const lightness = Math.floor(Math.random() * 10) + 90 // 90-100% lightness for very light text
+            const saturation = Math.floor(Math.random() * 15) + 5 // 5-20% saturation for subtle color
+            const hue = Math.floor(Math.random() * 360) // Random hue for variety
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+            return color
+        }
+    },
+    methods: {
+        sortedAlbums(albums) {
+            // Sort by rank descending (20 first, 1 last)
+            return [...albums].sort((a, b) => b.rank - a.rank)
+        }
+    }
+})
+</script>
+
+<style lang="scss" scoped>
+.blog-text-content {
+    // Style common HTML elements in blog text
+    :deep(strong) {
+        font-weight: bold;
+    }
+
+    :deep(em) {
+        font-style: italic;
+    }
+
+    :deep(a) {
+        color: inherit;
+        text-decoration: underline;
+        opacity: 0.9;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    :deep(ul),
+    :deep(ol) {
+        margin: 1rem 0;
+        padding-left: 2rem;
+    }
+
+    :deep(li) {
+        margin: 0.5rem 0;
+    }
+
+    :deep(blockquote) {
+        border-left: 3px solid currentColor;
+        padding-left: 1rem;
+        margin: 1rem 0;
+        opacity: 0.8;
+        font-style: italic;
+    }
+
+    :deep(code) {
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family: monospace;
+        font-size: 0.9em;
+    }
+
+    :deep(pre) {
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 1rem 0;
+
+        code {
+            background-color: transparent;
+            padding: 0;
+        }
+    }
+
+    :deep(h1),
+    :deep(h2),
+    :deep(h3),
+    :deep(h4),
+    :deep(h5),
+    :deep(h6) {
+        margin: 1.5rem 0 1rem;
+        font-weight: bold;
+    }
+
+    :deep(h1) {
+        font-size: 2em;
+    }
+    :deep(h2) {
+        font-size: 1.75em;
+    }
+    :deep(h3) {
+        font-size: 1.5em;
+    }
+    :deep(h4) {
+        font-size: 1.25em;
+    }
+    :deep(h5) {
+        font-size: 1.1em;
+    }
+    :deep(h6) {
+        font-size: 1em;
+    }
+}
+
+.album-entry {
+    transition: transform 0.2s ease;
+}
+
+.album-entry:hover {
+    transform: translateY(-4px);
+}
+
+.album-cover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.album-entry:hover .album-cover {
+    transform: scale(1.02);
+}
+
+.album-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.album-row-left {
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.album-row-right {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+}
+
+.album-cover-wrapper {
+    flex: 0 0 auto;
+    width: 25%;
+    max-width: 300px;
+    min-width: 200px;
+}
+
+.album-info-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+@media (max-width: 600px) {
+    .album-row-left,
+    .album-row-right {
+        flex-direction: column !important;
+        justify-content: center !important;
+    }
+
+    .album-cover-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .album-info-wrapper {
+        width: 100%;
+    }
+
+    .text-left,
+    .text-right {
+        text-align: left !important;
+    }
+}
+</style>

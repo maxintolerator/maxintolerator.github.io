@@ -283,6 +283,9 @@ export default defineComponent({
                 if (!window.kofiWidgetOverlay) return
                 window.kofiWidgetOverlay.draw(this.kofiUsername, {
                     type: 'floating-chat',
+                    // The widget's only position option is a raw style string; anchor it bottom-right.
+                    'floating-chat.core.position.bottom-left':
+                        'position: fixed; bottom: 24px; right: 16px; width: 160px; height: 65px;',
                     'floating-chat.donateButton.text': 'Support me',
                     'floating-chat.donateButton.background-color': '#ffffff',
                     'floating-chat.donateButton.text-color': '#0b0b10'

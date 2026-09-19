@@ -29,6 +29,15 @@
                         :style="'color: ' + invertedBackgroundColor"
                         @click="$router.push('/music-blog')"
                     />
+                    <q-btn
+                        v-if="kofiUrl"
+                        flat
+                        label="Ko-fi"
+                        no-caps
+                        :style="'color: ' + invertedBackgroundColor"
+                        :class="$q.screen.width > 450 ? 'q-ml-md' : ''"
+                        @click="kofi"
+                    />
                     <a href="mailto:max@intolerator.com"
                         ><q-btn
                             flat
@@ -184,6 +193,9 @@ import { defineComponent } from 'vue'
 import { useQuasar } from 'quasar'
 import PortfolioCard from '../components/PortfolioCard.vue'
 
+/** Ko-fi page name (the part after ko-fi.com/). Empty hides the widget and the header link. */
+const KOFI_USERNAME = ''
+
 export default defineComponent({
     name: 'IndexPage',
     setup() {
@@ -195,6 +207,7 @@ export default defineComponent({
     },
     data() {
         return {
+            kofiUsername: KOFI_USERNAME,
             currentScroll: 0,
             cards: [
                 {
@@ -215,6 +228,9 @@ export default defineComponent({
         }
     },
     computed: {
+        kofiUrl() {
+            return this.kofiUsername ? `https://ko-fi.com/${this.kofiUsername}` : null
+        },
         isScrollArrowVisible() {
             return this.currentScroll < this.$q.screen.height + 100
         },
@@ -251,8 +267,30 @@ export default defineComponent({
         window.addEventListener('scroll', () => {
             this.currentScroll = window.scrollY
         })
+        this.mountKofiWidget()
     },
     methods: {
+        kofi() {
+            window.open(this.kofiUrl)
+        },
+        /** Ko-fi's floating button widget; loaded once, only when a page name is set. */
+        mountKofiWidget() {
+            if (!this.kofiUsername || document.getElementById('kofi-widget-script')) return
+            const script = document.createElement('script')
+            script.id = 'kofi-widget-script'
+            script.src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'
+            script.async = true
+            script.onload = () => {
+                if (!window.kofiWidgetOverlay) return
+                window.kofiWidgetOverlay.draw(this.kofiUsername, {
+                    type: 'floating-chat',
+                    'floating-chat.donateButton.text': 'Support me',
+                    'floating-chat.donateButton.background-color': '#ffffff',
+                    'floating-chat.donateButton.text-color': '#0b0b10'
+                })
+            }
+            document.body.appendChild(script)
+        },
         linkedin() {
             window.open('https://www.linkedin.com/in/max-weidemann/')
         },

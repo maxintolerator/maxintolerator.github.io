@@ -140,18 +140,23 @@
             </div>
         </div>
         <div class="vp-wrapper">
-            <div class="vp-center-2">
-                <div class="row justify-center items-center q-gutter-x-lg">
-                    <three-dim-card
+            <div class="vp-center-2" style="max-width: 1000px; width: 100%">
+                <div
+                    class="text-h3 q-mb-lg"
+                    :style="'color: ' + invertedBackgroundColor"
+                >
+                    Portfolio
+                </div>
+                <div class="row justify-center items-stretch">
+                    <portfolio-card
                         v-for="card in cards"
                         :key="card.title"
-                        :image="card.image"
-                        :link="card.link"
-                        :head="card.title"
+                        :kicker="card.kicker"
+                        :title="card.title"
                         :body="card.body"
+                        :link="card.link"
+                        :link-label="card.linkLabel"
                         :color="invertedBackgroundColor"
-                        classes="transparent btn-style col-xs-12 col-sm-6 col-md-3 no-box-shadow card"
-                        style="height: 600px"
                     />
                 </div>
             </div>
@@ -162,7 +167,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { useQuasar } from 'quasar'
-import ThreeDimCard from '../components/ThreeDimCard.vue'
+import PortfolioCard from '../components/PortfolioCard.vue'
 
 export default defineComponent({
     name: 'IndexPage',
@@ -171,29 +176,25 @@ export default defineComponent({
         return { quasar }
     },
     components: {
-        ThreeDimCard
+        PortfolioCard
     },
     data() {
         return {
             currentScroll: 0,
             cards: [
                 {
-                    title: 'millionways App',
-                    image: 'images/mockup-webapp.png',
-                    link: 'https://millionways.me',
-                    body: 'I have built the millionways App using the Quasar Framework and Firebase. Using Cordova, I have also built the Android and iOS versions of the app. The app is a platform for people to self-reflect with the help of AI and to connect with others who are on a similar journey.'
-                },
-                {
-                    title: 'millionways AI Chatbot',
-                    image: 'images/mockup-chatbot.png',
+                    kicker: 'Co-founder & CTO',
+                    title: 'millionways',
+                    body: 'The frontier lab for behavioral intelligence. I co-founded millionways and lead its technology: the models, the API and the apps built on them.',
                     link: 'https://millionways.ai',
-                    body: 'I have built the millionways AI Chatbot using the Quasar Framework and Firebase. The chatbot is a virtual assistant that helps users to self-reflect and gives personalized answers using millionways and the OpenAI API.'
+                    linkLabel: 'millionways.ai'
                 },
                 {
-                    title: 'millionways API',
-                    image: 'images/api.png',
-                    link: 'https://api.millionways.org/docs',
-                    body: 'I have built the millionways API using Node.js Express and MongoDB. The API is a RESTful API that provides access to the millionways core technology. It is used by B2B customers, the millionways App and the millionways AI Chatbot.'
+                    kicker: 'Side project',
+                    title: 'Quiztape',
+                    body: 'Side A: stats. Side B: trivia. A music quiz cut from your own Last.fm listening history, with band facts sourced from MusicBrainz. One codebase for web, iOS and Android.',
+                    link: 'https://quiztape.com',
+                    linkLabel: 'quiztape.com'
                 }
             ]
         }

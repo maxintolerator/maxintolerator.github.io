@@ -180,7 +180,6 @@
                         :body="card.body"
                         :link="card.link"
                         :link-label="card.linkLabel"
-                        color="#ffffff"
                     />
                 </div>
             </div>
@@ -194,7 +193,7 @@ import { useQuasar } from 'quasar'
 import PortfolioCard from '../components/PortfolioCard.vue'
 
 /** Ko-fi page name (the part after ko-fi.com/). Empty hides the widget and the header link. */
-const KOFI_USERNAME = ''
+const KOFI_USERNAME = 'intolerator'
 
 export default defineComponent({
     name: 'IndexPage',

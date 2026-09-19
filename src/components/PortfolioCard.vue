@@ -4,7 +4,6 @@
         target="_blank"
         rel="noopener"
         class="portfolio-card col-xs-12 col-sm-6 col-md-5"
-        :style="'color: ' + color + '; border-color: ' + color"
     >
         <div class="text-overline portfolio-card__kicker">{{ kicker }}</div>
         <div class="text-h4 portfolio-card__title">{{ title }}</div>
@@ -23,17 +22,19 @@ export default defineComponent({
         title: { type: String, required: true },
         body: { type: String, required: true },
         link: { type: String, required: true },
-        linkLabel: { type: String, default: 'Visit' },
-        color: { type: String, default: '#fff' }
+        linkLabel: { type: String, default: 'Visit' }
     }
 })
 </script>
 
 <style lang="scss">
 .portfolio-card {
+    // The global stylesheet forces links black (!important); the class rule outranks it.
+    color: #ffffff !important;
+    border-color: #ffffff !important;
     display: block;
     text-decoration: none;
-    border: 1px solid;
+    border: 1px solid #ffffff;
     border-radius: 16px;
     padding: 32px;
     margin: 12px;

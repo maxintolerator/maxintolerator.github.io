@@ -117,24 +117,39 @@
                     :style="'color: ' + invertedBackgroundColor"
                 >
                     <p>
-                        I am a self-taught full-stack software engineer
-                        passionate about solving complex problems, making them
-                        easy to understand, and helping others learn. I started
-                        by teaching advanced Mathematics and Theoretical Physics
-                        at German universities and worked on building e-learning
-                        platforms early on.
+                        Co-Founder &amp; CTO of millionways, where we built
+                        something that doesn't exist anywhere else: the first
+                        Large Psychology Model.
                     </p>
                     <p>
-                        After graduating, I teamed up with my half-brother
-                        Martin to co-found millionways. I quickly learned the
-                        skills needed to create fully fleshed-out product demos,
-                        including the millionways mobile and web apps and the
-                        API, and set up the technical side of the business.
+                        While generative AI predicts what comes next, our
+                        model, Thorsten 4, analyzes the behavioral patterns
+                        that shape how decisions are actually formed. Built
+                        from the ground up on longitudinal research with 50+
+                        psychologists, 100,000+ hours of research hours, and
+                        millions of labeled behavioral data points, Thorsten
+                        surfaces decision-relevant signals that traditional AI
+                        fundamentally cannot. Behavioral intelligence is the
+                        missing AI layer we have built.
                     </p>
                     <p>
-                        I hold a Master's degree in Mathematics from the
-                        University of Frankfurt am Main, Germany, and multiple
-                        Certificates in Neural Networks and Deep Learning.
+                        I am a self-taught full-stack engineer/entrepreneur
+                        who started in advanced Mathematics and Theoretical
+                        Physics at German universities before co-founding
+                        millionways in New York with my half-brother Martin. I
+                        am most passionate about product and engineering
+                        end-to-end: from ML model development and API
+                        architecture to cloud infrastructure, frontend UIs,
+                        websites, business automations, and marketing
+                        materials.
+                    </p>
+                    <p>
+                        My background spans the full stack of building a
+                        company: product architecture, AI/ML (PyTorch, BERT,
+                        TensorFlow), cloud infrastructure (AWS, GCP, Digital
+                        Ocean), frontend and backend engineering (Vue.js,
+                        Next.js, Node.js, Flask, Firebase), DevOps, and
+                        Business Development.
                     </p>
                 </div>
             </div>
@@ -156,7 +171,7 @@
                         :body="card.body"
                         :link="card.link"
                         :link-label="card.linkLabel"
-                        :color="invertedBackgroundColor"
+                        color="#ffffff"
                     />
                 </div>
             </div>
